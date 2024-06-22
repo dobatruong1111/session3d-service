@@ -5,7 +5,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 
-import com.saolasoft.websocket.WebSocketHandler;
+import com.saolasoft.websocket.module.websocket.handler.WebSocketHandler;
 
 // Create a WebSocket configuration class to configure the WebSocket endpoints and enable SockJS.
 @Configuration
