@@ -35,13 +35,17 @@ public class CommandServiceImpl implements CommandService {
     @Override
     public boolean execute(Map<Parameter, String> parameters) {
         // Logic thực thi câu lệnh start vtk 3d server
-        StringSubstitutor substitutor = new StringSubstitutor(parameters.entrySet().stream()
-                .collect(Collectors.toMap(
-                        e -> e.getKey().getValue(),
-                        Map.Entry::getValue
-                )));
+        String executeCommand = "";
 
-        String executeCommand = substitutor.replace(command);
+        for (Map.Entry<Parameter, String> entry : parameters.entrySet()) {
+            executeCommand = command.replaceAll(entry.getKey().getValue(), entry.getValue());
+        }
+
+        if (!executeCommand.isEmpty()) {
+            // Logger
+            return false;
+        }
+
         return process(executeCommand);
     }
 
