@@ -23,10 +23,10 @@ public class SessionAPI {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
-	ConfigProperties configProperties;
+	private ConfigProperties configProperties;
 	
 	@Autowired
-	AppConfigProperties appConfigProperties;
+	private AppConfigProperties appConfigProperties;
 	
 	@Autowired
 	private SessionService sessionService;

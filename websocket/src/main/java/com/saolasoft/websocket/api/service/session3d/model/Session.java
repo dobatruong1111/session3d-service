@@ -5,15 +5,13 @@ public class Session {
 	private String id;
 	private String host;
 	private int port;
-	private String secret;
 	private String sessionUrl;
 	private String cmd;
 	
-	public Session(String id, String host, int port, String secret, String sessionUrl, String cmd) {
+	public Session(String id, String host, int port, String sessionUrl, String cmd) {
 		this.id = id;
 		this.host = host;
 		this.port = port;
-		this.secret = secret;
 		this.sessionUrl = sessionUrl;
 		this.cmd = cmd;
 	}
@@ -28,10 +26,6 @@ public class Session {
 	
 	public int getPort() {
 		return this.port;
-	}
-	
-	public String getSecret() {
-		return this.secret;
 	}
 	
 	public String getSessionUrl() {

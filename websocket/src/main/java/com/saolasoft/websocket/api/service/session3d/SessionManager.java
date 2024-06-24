@@ -39,14 +39,12 @@ public class SessionManager {
 			
 			int port = Integer.parseInt(resource.split(":")[1]);
 			
-			String secret = "";
-			
 			String sessionUrl = String.format(this.configProperties.getSessionUrl(), id);
 			
 			List<String> cmd = this.appConfigProperties.getViewer().getCmd();
 			String replacedCmd = String.format(String.join(" ", cmd), host, port);
 			
-			Session session = new Session(id, host, port, secret, sessionUrl, replacedCmd);
+			Session session = new Session(id, host, port, sessionUrl, replacedCmd);
 			this.sessions.put(id, session);
 			return session;
 		}

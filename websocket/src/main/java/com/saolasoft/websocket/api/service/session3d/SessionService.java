@@ -92,7 +92,7 @@ public class SessionService {
 		while (true) {
 			if (this.processManager.isReady(session, count)) {
 				APIResponseHeader header = new APIResponseHeader(200, "Ok");
-				APIResponse<WebSocketDTOGet> response = new APIResponse<>(header, new WebSocketDTOGet(session.getId(), session.getSecret(), session.getSessionUrl()));
+				APIResponse<WebSocketDTOGet> response = new APIResponse<>(header, new WebSocketDTOGet(session.getId(), session.getSessionUrl()));
 				return response;
 			}
 			
