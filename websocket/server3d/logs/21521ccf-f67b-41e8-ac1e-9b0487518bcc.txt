@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "D:\javaworkspace\websocket\websocket\server3d\vtkpython\vtk_server.py", line 108, in <module>
+    server.start_webserver(options=args, protocol=_Server, disableLogging=True)
+  File "C:\Users\DELL E5540\AppData\Local\Programs\Python\Python312\Lib\site-packages\wslink\server.py", line 301, in start_webserver
+    return exec_modes[exec_mode]()
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DELL E5540\AppData\Local\Programs\Python\Python312\Lib\site-packages\wslink\server.py", line 284, in main_exec
+    loop.run_until_complete(create_coroutine())
+  File "C:\Users\DELL E5540\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\DELL E5540\AppData\Local\Programs\Python\Python312\Lib\site-packages\wslink\backends\aiohttp\__init__.py", line 107, in start
+    await self._site.start()
+  File "C:\Users\DELL E5540\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\web_runner.py", line 119, in start
+    self._server = await loop.create_server(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DELL E5540\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1575, in create_server
+    raise OSError('could not bind on any address out of %r'
+OSError: could not bind on any address out of [('192.168.1.102', 9020)]

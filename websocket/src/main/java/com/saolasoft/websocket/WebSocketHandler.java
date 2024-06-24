@@ -20,7 +20,6 @@ public class WebSocketHandler extends AbstractWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
     	logger.info("afterConnectionEstablished");
-    	
         sessions.put(session.getId(), session);
         // Optionally, connect to other WebSocket servers
         WsClient client = new WsClient(session.getId(), this);
@@ -31,7 +30,6 @@ public class WebSocketHandler extends AbstractWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
     	logger.info("handleTextMessage - message: " + message.getPayload());
-    	
         // Forward message to another WebSocket server
         WsClient client = clients.get(session.getId());
         if (client != null && client.isConnected()) {
@@ -42,7 +40,6 @@ public class WebSocketHandler extends AbstractWebSocketHandler {
     @Override
     protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) throws Exception {
     	logger.info("handleBinaryMessage : " + message.toString());
-    	
         // Forward binary message to another WebSocket server
         WsClient client = clients.get(session.getId());
         if (client != null && client.isConnected()) {
@@ -53,7 +50,6 @@ public class WebSocketHandler extends AbstractWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
     	logger.info("afterConnectionClosed");
-    	
         sessions.remove(session.getId());
         WsClient client = clients.remove(session.getId());
         if (client != null) {
@@ -63,7 +59,6 @@ public class WebSocketHandler extends AbstractWebSocketHandler {
     
     public void sendMessageToClient(String sessionId, String message) throws Exception {
     	logger.info("sendMessageToClient");
-    	
         WebSocketSession session = sessions.get(sessionId);
         if (session != null && session.isOpen()) {
             session.sendMessage(new TextMessage(message));
@@ -72,7 +67,6 @@ public class WebSocketHandler extends AbstractWebSocketHandler {
     
     public void sendBinaryMessageToClient(String sessionId, byte[] message) throws Exception {
     	logger.info("sendBinaryMessageToClient");
-    	
         WebSocketSession session = sessions.get(sessionId);
         if (session != null && session.isOpen()) {
             session.sendMessage(new BinaryMessage(message));

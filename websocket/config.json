@@ -1,43 +1,31 @@
 {
     "configuration": {
         "log_dir": "./server3d/logs",
-        "sessionURL": "ws://localhost:8080/ws?sessionId=${id}&path=ws",
+        "sessionURL": "ws://localhost:8080/ws?sessionId=%s&path=ws",
         "timeout": 30,
-        "sanitize": {},
         "fields": [],
-        "content": ""
+		"resources": [
+			{
+		    	"host": "localhost",
+		        "port_range": [ 
+					9011, 
+					9020 
+				]
+			}
+		]
     },
-    "resources": [
-        {
-            "host": "localhost",
-            "port_range": [
-                9011,
-                9020
-            ]
-        }
-    ],
     "properties": {},
     "apps": {
         "viewer": {
             "cmd": [
-                "poetry",
-                "run",
                 "python",
-                "./server3d/vtk_server.py",
+                "./server3d/vtkpython/vtk_server.py",
                 "--host",
-				"${host}",
+				"%s",
                 "--port",
-				"${port}",
-                "--authKey",
-				"${secret}",
-                "--studyUID",
-				"${studyUUID}",
-                "--seriesUID",
-				"${seriesUUID}",
-                "--sessionID",
-				"${session2D}",
+				"%d",
                 "--timeout",
-                "15"
+                "20"
             ],
             "ready_line": "Starting factory"
         }

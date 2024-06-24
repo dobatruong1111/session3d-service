@@ -1,17 +1,15 @@
-package com.saolasoft.websocket.api.service.session3d;
+package com.saolasoft.websocket.api.service.session3d.model;
 
-import java.util.ArrayList;
-
-public class Session3D {
+public class Session {
 	
 	private String id;
 	private String host;
 	private int port;
 	private String secret;
 	private String sessionUrl;
-	private ArrayList<String> cmd;
+	private String cmd;
 	
-	public Session3D(String id, String host, int port, String secret, String sessionUrl, ArrayList<String> cmd) {
+	public Session(String id, String host, int port, String secret, String sessionUrl, String cmd) {
 		this.id = id;
 		this.host = host;
 		this.port = port;
@@ -40,7 +38,7 @@ public class Session3D {
 		return this.sessionUrl;
 	}
 	
-	public ArrayList<String> getCmd() {
+	public String getCmd() {
 		return this.cmd;
 	}
 }

@@ -1,76 +1,68 @@
 package com.saolasoft.websocket.api.service.session3d;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.saolasoft.websocket.api.dto.WebSocketDTOGet;
+import com.saolasoft.websocket.api.dto.WebSocketDTOCreate;
+import com.saolasoft.websocket.api.service.session3d.model.Session;
+import com.saolasoft.websocket.config.AppConfigProperties;
+import com.saolasoft.websocket.config.ConfigProperties;
+import java.util.*;
 
 public class SessionManager {
 	
-	private Map<String, Session3D> sessions;
-	private JsonNode config;
-	private ResourceManager resources;
-	private JsonNode sanitize;
-	// test
-	private Map<String, Object> options;
+	private ConfigProperties configProperties;
+	private AppConfigProperties appConfigProperties;
 	
-	public SessionManager(JsonNode config) {
+	private Map<String, Session> sessions;
+	private ResourceManager resources;
+	
+	public SessionManager() {
 		this.sessions = new HashMap<>();
-		this.config = config;
-		this.resources = new ResourceManager((ArrayNode) config.get("resources"));
-		this.sanitize = config.get("configuration").get("sanitize");
-		// test
-		this.options = new HashMap<>();
+		this.resources = new ResourceManager();
 	}
 	
-	public Session3D createSession(WebSocketDTOGet options) {
-		
-		this.options.put("application", options.getApplication());
-		this.options.put("useUrl", options.getUseUrl());
-		this.options.put("studyUUID", options.getStudyUUID());
-		this.options.put("seriesUUID", options.getSeriesUUID());
-		this.options.put("session2D", options.getSession2D());
-		
+	public void setConfigProperties(ConfigProperties configProperties) {
+		this.configProperties = configProperties;
+		this.resources.setConfigProperties(configProperties);
+	}
+	
+	public void setAppConfigProperties(AppConfigProperties appConfigProperties) {
+		this.appConfigProperties = appConfigProperties;
+	}
+	
+	public Session createSession(WebSocketDTOCreate options) {
 		String resource = this.resources.getNextResource();
+		
 		if (!resource.isEmpty()) {
 			UUID uuid = UUID.randomUUID();
 			String id = uuid.toString();
-			this.options.put("id", id);
 			
 			String host = resource.split(":")[0];
-			this.options.put("host", host);
 			
 			int port = Integer.parseInt(resource.split(":")[1]);
-			this.options.put("port", port);
 			
 			String secret = "";
-			this.options.put("secret", secret);
 			
-			String sessionUrl = this.config.get("configuration").get("sessionURL").asText().replace("${id}", id);
-			this.options.put("sessionUrl", sessionUrl);
+			String sessionUrl = String.format(this.configProperties.getSessionUrl(), id);
 			
-			ArrayNode cmd = (ArrayNode) this.config.get("apps").get(options.getApplication()).get("cmd");
-			ArrayList<String> resultList = new ArrayList<String>();
-			for (int i = 0; i < cmd.size(); ++i) {
-				String temp = cmd.get(i).asText();
-				if (temp.contains("$")) {
-					for (String key: this.options.keySet()) {
-						temp = temp.replace(String.format("${/s}", key), this.options.get(key).toString());
-					}
-				}
-				resultList.add(temp);
-			}
-			this.options.put("cmd", resultList);
+			List<String> cmd = this.appConfigProperties.getViewer().getCmd();
+			String replacedCmd = String.format(String.join(" ", cmd), host, port);
 			
-			Session3D session = new Session3D(id, host, port, secret, sessionUrl, resultList);
+			Session session = new Session(id, host, port, secret, sessionUrl, replacedCmd);
 			this.sessions.put(id, session);
-			
 			return session;
 		}
 		return null;
+	}
+	
+	public Session getSession(String id) {
+		return this.sessions.containsKey(id) ? this.sessions.get(id) : null;
+	}
+	
+	public void deleteSession(String id) {
+		if (this.sessions.containsKey(id)) {
+			String host = this.sessions.get(id).getHost();
+			int port = this.sessions.get(id).getPort();
+			this.resources.freeResource(host, port);
+			this.sessions.remove(id);
+		}
 	}
 }
