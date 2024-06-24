@@ -2,9 +2,7 @@ package com.saolasoft.websocket;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
-
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 
 public class WsClient extends WebSocketClient {
@@ -12,8 +10,8 @@ public class WsClient extends WebSocketClient {
     private final String sessionId;
     private final WebSocketHandler handler;
 
-    public WsClient(String sessionId, WebSocketHandler handler) throws Exception {
-        super(new URI("ws://localhost:1234/ws"));
+    public WsClient(String sessionId, WebSocketHandler handler, String sessionUrl) throws Exception {
+        super(new URI(sessionUrl));
         this.sessionId = sessionId;
         this.handler = handler;
     }

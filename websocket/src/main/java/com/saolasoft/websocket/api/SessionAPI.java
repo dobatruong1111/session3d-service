@@ -20,15 +20,16 @@ import com.saolasoft.websocket.config.ConfigProperties;
 @RestController
 public class SessionAPI {
 	
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+	
 	@Autowired
 	ConfigProperties configProperties;
 	
 	@Autowired
 	AppConfigProperties appConfigProperties;
 	
-	private final Logger logger = LoggerFactory.getLogger(getClass());
-	
-	private final SessionService sessionService = new SessionService();
+	@Autowired
+	private SessionService sessionService;
 	
 	@PostMapping("/websocketlink")
     public APIResponse<WebSocketDTOGet> getwslink(@RequestBody WebSocketDTOCreate payload) {

@@ -3,6 +3,7 @@ package com.saolasoft.websocket.api.service.session3d;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import com.saolasoft.websocket.Session3dRepository;
 import com.saolasoft.websocket.api.dto.WebSocketDTOCreate;
 import com.saolasoft.websocket.api.response.APIResponse;
 import com.saolasoft.websocket.api.response.APIResponseHeader;
@@ -28,9 +29,12 @@ public class SessionService {
 	private SessionManager sessionManager;
 	private ProcessManager processManager;
 	
-	public SessionService() {
+	private Session3dRepository session3dRepository;
+	
+	public SessionService(Session3dRepository session3dRepository) {
 		this.sessionManager = new SessionManager();
 		this.processManager = new ProcessManager();
+		this.session3dRepository = session3dRepository;
 	}
 	
 	public ConfigProperties getConfigProperties() {
@@ -69,6 +73,8 @@ public class SessionService {
 			APIResponse<WebSocketDTOGet> response = new APIResponse<>(header, null);
 			return response;
 		}
+		// Save session in repository
+		this.session3dRepository.saveSession(session);
 		logger.info(String.format("Session: id=%s, host=%s, port=%d, cmd=%s", session.getId(), session.getHost(), session.getPort(), session.getCmd()));
 		
 		// Start process
